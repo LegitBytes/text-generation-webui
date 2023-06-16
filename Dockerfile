@@ -17,8 +17,7 @@ RUN . /build/venv/bin/activate && \
 
 # https://developer.nvidia.com/cuda-gpus
 # for a rtx 2060: ARG TORCH_CUDA_ARCH_LIST="7.5"
-ARG TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
-#TORCH_CUDA_ARCH_LIST="7.5"
+ARG TORCH_CUDA_ARCH_LIST="7.5"
 #TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 RUN . /build/venv/bin/activate && \
     python3 setup_cuda.py bdist_wheel -d .
@@ -32,7 +31,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y libportaudio2 libasound-dev git python3 python3-pip make g++ && \
     rm -rf /var/lib/apt/lists/*
 
-RUN --mount=type=cache,target=/root/.cache/pip pip3 install virtualenv
+RUN --mount=type=cache,mount=0777,target=/root/.cache/pip pip3 install virtualenv
 RUN mkdir /app
 
 WORKDIR /app
