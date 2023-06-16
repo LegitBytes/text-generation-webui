@@ -1,5 +1,3 @@
-# syntax = docker/dockerfile:1.2
-
 FROM nvidia/cuda:11.3.0-devel-ubuntu20.04 as builder
 #nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
 
