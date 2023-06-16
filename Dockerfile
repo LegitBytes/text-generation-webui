@@ -23,6 +23,23 @@ RUN . /build/venv/bin/activate && \
 
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
 
+
+# the port the webui binds to on the host
+ENV HOST_PORT=7860
+# the port the webui binds to inside the container
+ENV CONTAINER_PORT=7860
+
+# the port the api binds to on the host
+ENV HOST_API_PORT=5000
+# the port the api binds to inside the container
+ENV CONTAINER_API_PORT=5000
+
+# the port the api stream endpoint binds to on the host
+ENV HOST_API_STREAM_PORT=5005
+# the port the api stream endpoint binds to inside the container
+ENV CONTAINER_API_STREAM_PORT=5005
+
+
 LABEL maintainer="Your Name <your.email@example.com>"
 LABEL description="Docker image for GPTQ-for-LLaMa and Text Generation WebUI"
 
@@ -71,4 +88,4 @@ RUN . /app/venv/bin/activate && \
 RUN cp /app/venv/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_cuda118.so /app/venv/lib/python3.10/site-packages/bitsandbytes/libbitsandbytes_cpu.so
 
 COPY . /app/
-ENV CLI_ARGS=""
+ENV CLI_ARGS="--model llama-7b-4bit --wbits 4 --listen --auto-devices"
