@@ -29,6 +29,10 @@ RUN . /build/venv/bin/activate && \
 
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
 
+ENV PIP_CACHE_DIR=/root/.cache/buildkit/pip
+RUN mkdir -p $PIP_CACHE_DIR
+RUN rm -f /etc/apt/apt.conf.d/docker-clean
+
 LABEL maintainer="Your Name <your.email@example.com>"
 LABEL description="Docker image for GPTQ-for-LLaMa and Text Generation WebUI"
 
