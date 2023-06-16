@@ -56,7 +56,7 @@ RUN . /app/venv/bin/activate && \
 
 COPY --from=builder /build /app/repositories/GPTQ-for-LLaMa
 RUN . /app/venv/bin/activate && \
-    pip3 install /app/repositories/GPTQ-for-LLaMa/*.whl
+    pip install /app/repositories/GPTQ-for-LLaMa/*.whl
 
 COPY extensions/api/requirements.txt /app/extensions/api/requirements.txt
 COPY extensions/elevenlabs_tts/requirements.txt /app/extensions/elevenlabs_tts/requirements.txt
