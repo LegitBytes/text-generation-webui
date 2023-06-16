@@ -1,4 +1,5 @@
-FROM nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
+FROM nvidia/cuda:11.3.0-devel-ubuntu20.04 as builder
+#nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv && \
