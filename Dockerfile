@@ -1,10 +1,5 @@
-# syntax = docker/dockerfile:1.2
 FROM nvidia/cuda:11.3.0-devel-ubuntu20.04 as builder
 #nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
-
-ENV PIP_CACHE_DIR=/root/.cache/buildkit/pip
-RUN mkdir -p $PIP_CACHE_DIR
-RUN rm -f /etc/apt/apt.conf.d/docker-clean
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv && \
@@ -14,18 +9,18 @@ RUN git clone https://github.com/oobabooga/GPTQ-for-LLaMa /build
 
 WORKDIR /build
 
-RUN python3 -m venv /build/venv
+RUN python -m venv /build/venv
 RUN . /build/venv/bin/activate && \
-    pip3 install --upgrade pip setuptools && \
-    pip3 install torch torchvision torchaudio && \
-    pip3 install -r requirements.txt
+    pip install --upgrade pip setuptools && \
+    pip install torch torchvision torchaudio && \
+    pip install -r requirements.txt
 
 # https://developer.nvidia.com/cuda-gpus
 # for a rtx 2060: ARG TORCH_CUDA_ARCH_LIST="7.5"
 ARG TORCH_CUDA_ARCH_LIST="7.5"
 #TORCH_CUDA_ARCH_LIST="3.5;5.0;6.0;6.1;7.0;7.5;8.0;8.6+PTX"
 RUN . /build/venv/bin/activate && \
-    python3 setup_cuda.py bdist_wheel -d .
+    python setup_cuda.py bdist_wheel -d .
 
 FROM nvidia/cuda:11.8.0-runtime-ubuntu22.04
 
@@ -40,7 +35,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y libportaudio2 libasound-dev git python3 python3-pip make g++ && \
     rm -rf /var/lib/apt/lists/*
 
-RUN pip3 install virtualenv
+RUN pip install virtualenv
 #--mount=type=cache,mode=0777,target=/root/.cache/pip pip3 install virtualenv
 RUN mkdir /app
 
@@ -51,8 +46,8 @@ RUN test -n "${WEBUI_VERSION}" && git reset --hard ${WEBUI_VERSION} || echo "Usi
 
 RUN virtualenv /app/venv
 RUN . /app/venv/bin/activate && \
-    pip3 install --upgrade pip setuptools && \
-    pip3 install torch torchvision torchaudio
+    pip install --upgrade pip setuptools && \
+    pip install torch torchvision torchaudio
 
 COPY --from=builder /build /app/repositories/GPTQ-for-LLaMa
 RUN . /app/venv/bin/activate && \
