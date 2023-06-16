@@ -1,9 +1,10 @@
+# syntax = docker/dockerfile:1.2
 FROM nvidia/cuda:11.3.0-devel-ubuntu20.04 as builder
 #nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
 
-#ENV PIP_CACHE_DIR=/root/.cache/buildkit/pip
-#RUN mkdir -p $PIP_CACHE_DIR
-#RUN rm -f /etc/apt/apt.conf.d/docker-clean
+ENV PIP_CACHE_DIR=/root/.cache/buildkit/pip
+RUN mkdir -p $PIP_CACHE_DIR
+RUN rm -f /etc/apt/apt.conf.d/docker-clean
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv && \
