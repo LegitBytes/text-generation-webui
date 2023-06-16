@@ -31,7 +31,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y libportaudio2 libasound-dev git python3 python3-pip make g++ && \
     rm -rf /var/lib/apt/lists/*
 
-RUN --mount=type=cache,mount=0777,target=/root/.cache/pip pip3 install virtualenv
+RUN --mount=type=cache,mode=0777,target=/root/.cache/pip pip3 install virtualenv
 RUN mkdir /app
 
 WORKDIR /app
