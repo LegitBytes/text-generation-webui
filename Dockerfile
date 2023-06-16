@@ -1,5 +1,11 @@
+# syntax = docker/dockerfile:1.2
+
 FROM nvidia/cuda:11.3.0-devel-ubuntu20.04 as builder
 #nvidia/cuda:11.8.0-devel-ubuntu22.04 as builder
+
+ENV PIP_CACHE_DIR=/root/.cache/buildkit/pip
+RUN mkdir -p $PIP_CACHE_DIR
+RUN rm -f /etc/apt/apt.conf.d/docker-clean
 
 RUN apt-get update && \
     apt-get install --no-install-recommends -y git vim build-essential python3-dev python3-venv && \
@@ -31,7 +37,7 @@ RUN apt-get update && \
     apt-get install --no-install-recommends -y libportaudio2 libasound-dev git python3 python3-pip make g++ && \
     rm -rf /var/lib/apt/lists/*
 
-RUN --mount=type=cache,mode=0777,target=/root/.cache/pip ls -alh /root/.cache/pip;pip3 install virtualenv;ls -alh /root/.cache/pip
+RUN --mount=type=cache,mode=0777,target=/root/.cache/pip pip3 install virtualenv
 RUN mkdir /app
 
 WORKDIR /app
